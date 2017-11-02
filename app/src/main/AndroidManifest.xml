@@ -16,11 +16,13 @@
         <activity android:name="com.alex.eventbus.Main4Activity" />
         <activity android:name="com.myallsimpledemo.glide.ShowPictureActivity" />
         <activity android:name="com.myallximpledemo.rx.RxjavaActivity" />
-        <activity android:name="com.demo.kotlin.KotlinMainActivity">
-
-        </activity>
+        <activity android:name="com.demo.kotlin.KotlinMainActivity" />
         <activity android:name="com.demo.kotlin.KotlinSencondActivity" />
-        <activity android:name="com.myallximpledemo.rx.rxjavademo.RxMapActivity">
+        <activity android:name="com.myallximpledemo.rx.rxjavademo.RxMapActivity" />
+        <activity android:name="com.demo.viewpager_indicator.activity.MainActivity"></activity>
+        <activity android:name="com.demo.imageview.ImageViewScaleTypeActivity">
+        </activity>
+        <activity android:name="com.dfire.demo.expand.activity.ExpandActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
