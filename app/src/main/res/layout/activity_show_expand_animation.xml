@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.dfire.demo.animation.ShowExpandAnimationActivity">
+
+    <TextView
+        android:id="@+id/tv_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:maxLines="3"
+        android:text="店家可以在这里管理本店售卖的菜肴、百货、服装等商品。连锁店可以统一添加商品并下发到对应的门店。支持多种价格方案，支持不同区域和不同时间段设置不同的菜单。\n  店家可以在这里管理本店售卖的菜肴、百货、服装等商品。连锁店可以统一添加商品并下发到对应的门店。支持多种价格方案，支持不同区域和不同时间段设置不同的菜单。\n  店家可以在这里管理本店售卖的菜肴、百货、服装等商品。连锁店可以统一添加商品并下发到对应的门店。支持多种价格方案，支持不同区域和不同时间段设置不同的菜单。"
+        />
+
+</LinearLayout>

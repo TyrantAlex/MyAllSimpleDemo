@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name="com.base.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,16 +20,17 @@
         <activity android:name="com.demo.kotlin.KotlinMainActivity" />
         <activity android:name="com.demo.kotlin.KotlinSencondActivity" />
         <activity android:name="com.myallximpledemo.rx.rxjavademo.RxMapActivity" />
-        <activity android:name="com.demo.viewpager_indicator.activity.MainActivity"></activity>
-        <activity android:name="com.demo.imageview.ImageViewScaleTypeActivity">
-        </activity>
-        <activity android:name="com.dfire.demo.expand.activity.ExpandActivity">
+        <activity android:name="com.demo.viewpager_indicator.activity.MainActivity" />
+        <activity android:name="com.demo.imageview.ImageViewScaleTypeActivity" />
+        <activity android:name="com.dfire.demo.expand.activity.ExpandActivity"></activity>
+        <activity android:name="com.dfire.demo.animation.ShowExpandAnimationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.realm.ui.RealmFirstActivity"></activity>
     </application>
 
 </manifest>
