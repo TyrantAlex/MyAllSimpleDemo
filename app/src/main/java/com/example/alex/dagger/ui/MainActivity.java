@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 import com.example.alex.dagger.R;
-import com.example.alex.dagger.lisenter.DaggerTestShopCom;
+//import com.example.alex.dagger.lisenter.DaggerTestShopCom;
 import com.example.alex.dagger.moudle.TestShop;
 import com.example.alex.dagger.qualifier.Qualifier;
 
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DaggerTestShopCom.builder().build().inject(this);
+//        DaggerTestShopCom.builder().build().inject(this);
         TextView tvShow = (TextView) findViewById(R.id.tv_show);
 //        mTestShop.setPen("中华钢笔");
 //        Log.d("sqs","现在的笔是" + mTestShop.getPen());

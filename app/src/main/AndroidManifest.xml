@@ -24,13 +24,15 @@
         <activity android:name="com.demo.imageview.ImageViewScaleTypeActivity" />
         <activity android:name="com.dfire.demo.expand.activity.ExpandActivity"></activity>
         <activity android:name="com.dfire.demo.animation.ShowExpandAnimationActivity">
+
+        </activity>
+        <activity android:name="com.realm.ui.RealmFirstActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.realm.ui.RealmFirstActivity"></activity>
     </application>
 
 </manifest>
