@@ -2,25 +2,23 @@ package com.realm.config;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
-
 import com.realm.bean.CelebiPage;
 import com.realm.bean.CelebiPageBean;
+import com.realm.lisenter.OnFinishListener;
 import com.realm.utils.FileUtils;
 import com.realm.utils.ZipUtils;
-
+import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -37,6 +35,14 @@ public class CelebiPageConfig {
     private String path = "CelebiFilePath";
 
     private String ZIP_FILE_NAME = "DynamicPage.zip";
+
+    /**
+     * 版本号存放文件名
+     */
+    private String ZIP_FILE_NAME_PACKAGE_VERSION = "package.json";
+
+    //需要得到一个versionCode
+    String packageVersionCode = "";
 
     private Context context;
 
@@ -55,14 +61,22 @@ public class CelebiPageConfig {
             //清除本地json文件
             deleteLocalFile(path);
         }
+
         //是否需要解压zip包
         if (isNeed2UpZip) {
-            upZipPage(path);
-        }
+            upZipPage(path, new OnFinishListener<String>() {
+                @Override
+                public void onSuccess(String s) {
+                    packageVersionCode = s;
+                    queryPageFromServer(packageVersionCode);
+                }
 
-        //需要得到一个versionCode
-        String packageVersionCode = "";
-        queryPageFromServer(packageVersionCode);
+                @Override
+                public void onFailure(String message) {
+
+                }
+            });
+        }
     }
 
     /**
@@ -73,11 +87,35 @@ public class CelebiPageConfig {
         boolean exisPageIdForDB = isExisPageIdForDB(pageId);
         if (exisPageIdForDB) {
             //从网络加载
-
+            Log.d("sqs","从网络加载页面...");
         } else {
             //从文件中加载
-
+            String pageStr = queryPageFromLocal(pageId);
+            Log.d("sqs","从本地文件中加载页面..." + pageStr);
         }
+    }
+
+    /**
+     * 从本地加载页面
+     * @param pageId
+     */
+    private String queryPageFromLocal(String pageId) {
+        File dir = context.getDir(path, Activity.MODE_PRIVATE);
+        String[] list = dir.list();
+        String completePath = null;
+        for (int i = 0; i < list.length; i++) {
+            //取得对应json文件路径
+            if (pageId.equals(list[i])) {
+                completePath = dir.getPath() + File.separator + list[i];
+            }
+        }
+        String pageStr = null;
+        try {
+            pageStr = FileUtils.readFileToString(completePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pageStr;
     }
 
     /**
@@ -107,7 +145,7 @@ public class CelebiPageConfig {
      * 解压zip包创建本地文件夹
      * @param path 路径
      */
-    private void upZipPage(final String path) {
+    private void upZipPage(final String path,final OnFinishListener<String> listener) {
         Observable.create(new Observable.OnSubscribe<Object>() {
             @Override
             public void call(Subscriber<? super Object> subscriber) {
@@ -120,8 +158,9 @@ public class CelebiPageConfig {
         .observeOn(AndroidSchedulers.mainThread()) // 指定 Subscriber 的回调发生在主线程
         .subscribe(new Observer<Object>() {
                     @Override
-                    public void onNext(Object drawable) {
-                        getPageVersionCode(path);
+                    public void onNext(Object object) {
+                        String pageVersionCode = getPageVersionCode(path);
+                        listener.onSuccess(pageVersionCode);
                     }
 
                     @Override
@@ -139,16 +178,24 @@ public class CelebiPageConfig {
         String[] list = dir.list();
         String completePath = null;
         for (int i = 0; i < list.length; i++) {
-            completePath = dir.getPath() + File.separator + list[i];
+            //取得版本号文件路径
+            if (ZIP_FILE_NAME_PACKAGE_VERSION.equals(list[i])) {
+                completePath = dir.getPath() + File.separator + list[i];
+            }
         }
         String pageStr = null;
+        String versionCode = null;
         try {
             pageStr = FileUtils.readFileToString(completePath);
-            Log.d("sqs", "page 字符串: " + pageStr);
-        } catch (IOException e) {
+            Log.d("sqs", "page 字符串: " + pageStr.trim());
+            if (!TextUtils.isEmpty(pageStr)) {
+                JSONObject jsonObject = new JSONObject(pageStr);
+                versionCode = jsonObject.getString("version");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return pageStr;
+        return versionCode;
     }
 
     /**
@@ -182,52 +229,5 @@ public class CelebiPageConfig {
         Realm  mRealm=Realm.getDefaultInstance();
         CelebiPage celebiPage = mRealm.where(CelebiPage.class).equalTo("android", pageId).findFirst();
         return celebiPage == null ? false : true;
-    }
-    /**-------------------------------------------------------------------realm 增删改查------------------------------------------------------------------------------------**/
-    public void addPage() {
-        Realm realm=Realm.getDefaultInstance();
-        realm.beginTransaction();
-        CelebiPageBean celebiPageBean = realm.createObject(CelebiPageBean.class); // Create a new object
-        celebiPageBean.setPackageVersion("1.0.1");
-        realm.commitTransaction();
-    }
-
-    public List<CelebiPageBean> queryPageBean() {
-        Realm  mRealm=Realm.getDefaultInstance();
-
-        RealmResults<CelebiPageBean> realmResults = mRealm.where(CelebiPageBean.class).findAll();
-
-        return mRealm.copyFromRealm(realmResults);
-    }
-
-    public void deletePage() {
-        Realm  mRealm=Realm.getDefaultInstance();
-
-        final RealmResults<CelebiPageBean> celebiPageBeans=  mRealm.where(CelebiPageBean.class).findAll();
-
-        mRealm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-
-                CelebiPageBean celebiPageBean=celebiPageBeans.get(5);
-                celebiPageBean.deleteFromRealm();
-//                //删除第一个数据
-//                celebiPageBeans.deleteFirstFromRealm();
-//                //删除最后一个数据
-//                celebiPageBeans.deleteLastFromRealm();
-//                //删除位置为1的数据
-//                celebiPageBeans.deleteFromRealm(1);
-//                //删除所有数据
-//                celebiPageBeans.deleteAllFromRealm();
-            }
-        });
-    }
-
-    public void updatePage() {
-        Realm  mRealm=Realm.getDefaultInstance();
-        CelebiPageBean celebiPageBean = mRealm.where(CelebiPageBean.class).equalTo("packageVersion", "1.0.1").findFirst();
-        mRealm.beginTransaction();
-        celebiPageBean.setPackageVersion("1.0.2");
-        mRealm.commitTransaction();
     }
 }
