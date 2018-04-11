@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-import com.realm.bean.CelebiPage;
 import com.realm.bean.CelebiPageBean;
 import com.realm.lisenter.OnFinishListener;
 import com.realm.utils.FileUtils;
@@ -12,7 +11,6 @@ import com.realm.utils.ZipUtils;
 import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import rx.Observable;
@@ -46,8 +44,11 @@ public class CelebiPageConfig {
 
     private Context context;
 
+    RealmDBManager realmDBManager;
+
     public CelebiPageConfig(Context context) {
         this.context = context;
+        realmDBManager = new RealmDBManager();
     }
 
     /**
@@ -84,7 +85,7 @@ public class CelebiPageConfig {
      */
     public void startPageInit(String pageId) {
         //数据库中是否存在当前页面id
-        boolean exisPageIdForDB = isExisPageIdForDB(pageId);
+        boolean exisPageIdForDB = realmDBManager.isExisPageIdForDB(pageId);
         if (exisPageIdForDB) {
             //从网络加载
             Log.d("sqs","从网络加载页面...");
@@ -205,29 +206,8 @@ public class CelebiPageConfig {
     private void queryPageFromServer(String packageVersion) {
         //TEMP
         CelebiPageBean celebiPageBean = new CelebiPageBean(); // Create a new object
+
         celebiPageBean.setPackageVersion("1.0.3");
-        addPageForRealm(celebiPageBean);
-    }
-
-    /**
-     * 存储页面
-     * @param celebiPageBean
-     */
-    private void addPageForRealm(CelebiPageBean celebiPageBean) {
-        Realm realm=Realm.getDefaultInstance();
-        realm.beginTransaction();
-        realm.copyToRealm(celebiPageBean);
-        realm.commitTransaction();
-    }
-
-    /**
-     * 查询pageid是否存在于数据库中
-     * @param pageId
-     * @return
-     */
-    private boolean isExisPageIdForDB(String pageId){
-        Realm  mRealm=Realm.getDefaultInstance();
-        CelebiPage celebiPage = mRealm.where(CelebiPage.class).equalTo("android", pageId).findFirst();
-        return celebiPage == null ? false : true;
+        realmDBManager.addPageForRealm(celebiPageBean);
     }
 }

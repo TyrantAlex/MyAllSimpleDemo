@@ -1,5 +1,6 @@
 package com.realm.config;
 
+import com.realm.bean.CelebiPage;
 import com.realm.bean.CelebiPageBean;
 
 import java.util.List;
@@ -12,7 +13,29 @@ import io.realm.RealmResults;
  * @Date: 2018/4/3 0003
  */
 
-public class RealmManager {
+public class RealmDBManager {
+    /**
+     * 存储页面
+     * @param celebiPageBean
+     */
+    public void addPageForRealm(CelebiPageBean celebiPageBean) {
+        Realm realm=Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.copyToRealm(celebiPageBean);
+        realm.commitTransaction();
+    }
+
+    /**
+     * 查询pageid是否存在于数据库中
+     * @param pageId
+     * @return
+     */
+    public boolean isExisPageIdForDB(String pageId){
+        Realm  mRealm=Realm.getDefaultInstance();
+        CelebiPage celebiPage = mRealm.where(CelebiPage.class).equalTo("android", pageId).findFirst();
+        return celebiPage == null ? false : true;
+    }
+
     /**-------------------------------------------------------------------realm 增删改查------------------------------------------------------------------------------------**/
     public void addPage() {
         Realm realm=Realm.getDefaultInstance();

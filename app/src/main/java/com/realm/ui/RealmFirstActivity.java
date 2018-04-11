@@ -8,7 +8,7 @@ import android.widget.Button;
 import com.example.alex.dagger.R;
 import com.realm.bean.CelebiPageBean;
 import com.realm.config.CelebiPageConfig;
-import com.realm.config.RealmManager;
+import com.realm.config.RealmDBManager;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +35,7 @@ public class RealmFirstActivity extends AppCompatActivity {
 
     CelebiPageConfig celebiPageConfig;
 
-    RealmManager realmManager;
+    RealmDBManager realmDBManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class RealmFirstActivity extends AppCompatActivity {
         setContentView(R.layout.activity_realm_first);
         ButterKnife.bind(this);
         celebiPageConfig = new CelebiPageConfig(this);
-        realmManager = new RealmManager();
+        realmDBManager = new RealmDBManager();
         initEvent();
     }
 
@@ -51,7 +51,7 @@ public class RealmFirstActivity extends AppCompatActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                realmManager.addPage();
+                realmDBManager.addPage();
                 Log.d("realm", "添加");
             }
         });
@@ -59,14 +59,14 @@ public class RealmFirstActivity extends AppCompatActivity {
         btn_query.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<CelebiPageBean> celebiPageBeans = realmManager.queryPageBean();
+                List<CelebiPageBean> celebiPageBeans = realmDBManager.queryPageBean();
             }
         });
 
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                realmManager.deletePage();
+                realmDBManager.deletePage();
                 Log.d("realm", "删除");
             }
         });
@@ -74,7 +74,7 @@ public class RealmFirstActivity extends AppCompatActivity {
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                realmManager.updatePage();
+                realmDBManager.updatePage();
                 Log.d("realm", "修改");
             }
         });
