@@ -3,6 +3,7 @@
     package="com.example.alex.dagger">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name="com.base.MyApplication"
@@ -24,9 +25,10 @@
         <activity android:name="com.demo.imageview.ImageViewScaleTypeActivity" />
         <activity android:name="com.dfire.demo.expand.activity.ExpandActivity"></activity>
         <activity android:name="com.dfire.demo.animation.ShowExpandAnimationActivity">
-
         </activity>
         <activity android:name="com.realm.ui.RealmFirstActivity">
+        </activity>
+        <activity android:name="com.fileupload.FileUploadTestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
