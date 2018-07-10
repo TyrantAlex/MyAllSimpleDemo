@@ -1,12 +1,15 @@
 package com.fileupload.utils;
 
+import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -23,6 +26,67 @@ public class UploadUtils {
     private static final String CHARSET = "utf-8"; //设置编码
     public static final String SUCCESS = "1";
     public static final String FAILURE = "0";
+
+
+    /**
+     * 上传json数据
+     * @param urlPath
+     * @param json
+     * @return
+     */
+    public static String uploadJson(String urlPath, String json) {
+        String result = "";
+        BufferedReader reader = null;
+        try {
+            URL url = new URL(urlPath);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setUseCaches(false);
+            conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.setRequestProperty("Charset", "UTF-8");
+            // 设置文件类型:
+//            conn.setRequestProperty("Content-Type","application/json; charset=UTF-8");
+            conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
+            // 设置接收类型否则返回415错误
+            //conn.setRequestProperty("accept","*/*")此处为暴力方法设置接受所有类型，以此来防范返回415;
+//            conn.setRequestProperty("accept","application/json");
+            // 往服务器里面发送数据
+            if (json != null && !TextUtils.isEmpty(json)) {
+                byte[] writebytes = json.getBytes();
+                // 设置文件长度
+                conn.setRequestProperty("Content-Length", String.valueOf(writebytes.length));
+                conn.setRequestProperty("log", json);
+                OutputStream outwritestream = conn.getOutputStream();
+                outwritestream.write(json.getBytes());
+                outwritestream.flush();
+                outwritestream.close();
+                Log.d("sqs", "post responseCode:"+conn.getResponseCode());
+            }
+            if (conn.getResponseCode() == 200) {
+                reader = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()));
+                String str, wholeStr = "";
+                while((str = reader.readLine()) != null){
+                    wholeStr += str;
+                }
+                Log.d("sqs", "post responseRsult:"+ wholeStr);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
+
 
     /**
      * android上传文件到服务器

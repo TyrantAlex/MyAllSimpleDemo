@@ -16,9 +16,12 @@ public class ThreadPoolRequest {
 
     private File file;
 
+    private String param;
+
     public ThreadPoolRequest(Builder builder) {
         this.url = builder.url;
         this.file = builder.file;
+        this.param = builder.param;
     }
 
     public String host() {
@@ -42,12 +45,23 @@ public class ThreadPoolRequest {
         return file;
     }
 
+    public String params(){
+        return param;
+    }
+
     public static class Builder{
         public String url;
 
         public File file;
 
+        public String param;
+
         public Builder() {
+        }
+
+        public Builder param(String param){
+            this.param = param;
+            return this;
         }
 
         public Builder url(String url){
