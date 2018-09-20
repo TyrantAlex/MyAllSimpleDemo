@@ -3,6 +3,14 @@ package com.fileupload.utils;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.fileupload.threadpool.HttpCallBack;
+import com.fileupload.vo.LogVo;
+import com.fileupload.vo.UploadVo;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -27,14 +35,13 @@ public class UploadUtils {
     public static final String SUCCESS = "1";
     public static final String FAILURE = "0";
 
-
     /**
      * 上传json数据
      * @param urlPath
      * @param json
      * @return
      */
-    public static String uploadJson(String urlPath, String json) {
+    public static String uploadJson(String urlPath, String json, HttpCallBack httpCallBack) {
         String result = "";
         BufferedReader reader = null;
         try {
@@ -72,21 +79,33 @@ public class UploadUtils {
                     wholeStr += str;
                 }
                 Log.d("sqs", "post responseRsult:"+ wholeStr);
+                if (httpCallBack != null) {
+                    httpCallBack.onSuccess(wholeStr);
+                }
+            } else {
+                if (httpCallBack != null) {
+                    httpCallBack.onFail();
+                }
             }
         } catch (Exception e) {
+            if (httpCallBack != null) {
+                httpCallBack.onFail();
+            }
             e.printStackTrace();
         } finally {
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
+                    if (httpCallBack != null) {
+                        httpCallBack.onFail();
+                    }
                     e.printStackTrace();
                 }
             }
         }
         return result;
     }
-
 
     /**
      * android上传文件到服务器
@@ -95,7 +114,7 @@ public class UploadUtils {
      * @param RequestURL 请求的rul
      * @return 返回响应的内容
      */
-    public static String uploadFile(File file, String RequestURL) {
+    public static String uploadFile(File file, String RequestURL, HttpCallBack httpCallBack) {
         String BOUNDARY = UUID.randomUUID().toString();  //边界标识   随机生成
         String PREFIX = "--", LINE_END = "\r\n";
         String CONTENT_TYPE = "multipart/form-data";   //内容类型
@@ -151,14 +170,53 @@ public class UploadUtils {
                 int res = conn.getResponseCode();
                 Log.e(TAG, "response code:" + res);
                 if (res == 200) {
+                    if (httpCallBack != null) {
+                        httpCallBack.onSuccess("");
+                    }
                     return SUCCESS;
+                } else {
+                    if (httpCallBack != null) {
+                        httpCallBack.onFail();
+                    }
                 }
             }
         } catch (MalformedURLException e) {
+            if (httpCallBack != null) {
+                httpCallBack.onFail();
+            }
             e.printStackTrace();
         } catch (IOException e) {
+            if (httpCallBack != null) {
+                httpCallBack.onFail();
+            }
             e.printStackTrace();
         }
         return FAILURE;
+    }
+
+    public static String getPostJsonString(UploadVo uploadVo) {
+        if (uploadVo == null) {
+            return "";
+        }
+        String jsonStr = "";
+        try {
+            JSONObject originJsonObj = new JSONObject();
+            originJsonObj.put("platform", uploadVo.getPlatform());
+            originJsonObj.put("packageName", uploadVo.getPackageName());
+            originJsonObj.put("version", uploadVo.getVersion());
+            originJsonObj.put("apkName", uploadVo.getApkName());
+            JSONArray jsonArray = new JSONArray();
+            for (LogVo vo : uploadVo.getLog()) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("uniqueId", vo.getUniqueId());
+                jsonObject.put("content", vo.getContent());
+                jsonArray.put(jsonObject);
+            }
+            originJsonObj.put("log", jsonArray);
+            jsonStr = "log=" + originJsonObj.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonStr;
     }
 }

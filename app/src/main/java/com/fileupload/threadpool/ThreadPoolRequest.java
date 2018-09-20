@@ -18,10 +18,13 @@ public class ThreadPoolRequest {
 
     private String param;
 
+    private HttpCallBack httpCallBack;
+
     public ThreadPoolRequest(Builder builder) {
         this.url = builder.url;
         this.file = builder.file;
         this.param = builder.param;
+        this.httpCallBack = builder.httpCallBack;
     }
 
     public String host() {
@@ -49,12 +52,19 @@ public class ThreadPoolRequest {
         return param;
     }
 
+    public HttpCallBack httpCallBack(){
+        return httpCallBack;
+    }
+
+
     public static class Builder{
         public String url;
 
         public File file;
 
         public String param;
+
+        private HttpCallBack httpCallBack;
 
         public Builder() {
         }
@@ -71,6 +81,11 @@ public class ThreadPoolRequest {
 
         public Builder file(File file){
             this.file = file;
+            return this;
+        }
+
+        public Builder httpCallBack(HttpCallBack httpCallBack){
+            this.httpCallBack = httpCallBack;
             return this;
         }
 

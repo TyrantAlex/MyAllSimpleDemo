@@ -1,12 +1,13 @@
 package com.fileupload.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author : hongshen
  * @Date: 2018/7/4 0004
  */
-public class UploadVo {
+public class UploadVo implements Serializable {
     private String platform;
 
     private String packageName;

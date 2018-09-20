@@ -2,7 +2,6 @@ package com.fileupload;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.fileupload.vo.UploadVo;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +130,7 @@ public class FileUploadTestActivity extends Activity{
             public void run() {
                 //多线程测试打印
                 Log.d("sqs", "Current Thread:" + Thread.currentThread().getName());
-                UploadUtils.uploadFile(file, url);
+                UploadUtils.uploadFile(file, url, null);
             }
         }.start();
     }

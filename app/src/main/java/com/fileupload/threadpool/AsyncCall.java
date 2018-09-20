@@ -21,9 +21,9 @@ public class AsyncCall extends NameRunnable{
     @Override
     protected void execute() {
         if (request.file() != null) {
-            UploadUtils.uploadFile(request.file(), request.url());
+            UploadUtils.uploadFile(request.file(), request.url(), request.httpCallBack());
         } else if (request.params() != null) {
-            UploadUtils.uploadJson(request.url(), request.params());
+            UploadUtils.uploadJson(request.url(), request.params(), request.httpCallBack());
         }
     }
 }

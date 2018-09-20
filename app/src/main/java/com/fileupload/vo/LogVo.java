@@ -15,6 +15,11 @@ public class LogVo {
      */
     private String content;
 
+    /**
+     * 日志类型
+     */
+    private String type;
+
     public String getUniqueId() {
         return uniqueId;
     }
@@ -29,5 +34,13 @@ public class LogVo {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
