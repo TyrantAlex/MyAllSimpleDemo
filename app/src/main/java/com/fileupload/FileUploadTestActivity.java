@@ -8,6 +8,8 @@ import android.view.View;
 
 import com.example.alex.dagger.R;
 import com.fileupload.threadpool.AsyncCall;
+import com.fileupload.threadpool.HsThreadPool;
+import com.fileupload.threadpool.HsThreadPoolManager;
 import com.fileupload.threadpool.ThreadPoolDispatcher;
 import com.fileupload.threadpool.ThreadPoolRequest;
 import com.fileupload.utils.MD5Util;
@@ -149,5 +151,15 @@ public class FileUploadTestActivity extends Activity{
         }finally {
             threadPoolDispatcher.finished(asyncCall);
         }
+    }
+
+    private void hsThreadPoolTest() {
+        ThreadPoolRequest request = new ThreadPoolRequest.Builder()
+                .url(url)
+                .param("1232131")
+                .build();
+        AsyncCall asyncCall = new AsyncCall(request);
+        HsThreadPool threadPool = HsThreadPoolManager.newInstance();
+        threadPool.execute(asyncCall);
     }
 }
