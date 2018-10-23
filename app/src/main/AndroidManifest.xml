@@ -23,20 +23,24 @@
         <activity android:name="com.myallximpledemo.rx.rxjavademo.RxMapActivity" />
         <activity android:name="com.demo.viewpager_indicator.activity.MainActivity" />
         <activity android:name="com.demo.imageview.ImageViewScaleTypeActivity" />
+        <activity android:name="com.dfire.demo.expand.activity.ExpandActivity" />
+        <activity android:name="com.dfire.demo.animation.ShowExpandAnimationActivity" />
+        <activity android:name="com.realm.ui.RealmFirstActivity" />
+        <activity android:name="com.realm.ui.JsonParseActivity" />
+        <activity android:name="com.dataBingding.ui.DataBingdingTestActivity">
+
         <activity android:name="com.dfire.demo.expand.activity.ExpandActivity"></activity>
         <activity android:name="com.dfire.demo.animation.ShowExpandAnimationActivity">
         </activity>
-        <activity android:name="com.realm.ui.RealmFirstActivity">
-        </activity>
-        <activity android:name="com.realm.ui.JsonParseActivity">
-        </activity>
-        <activity android:name="com.fileupload.FileUploadTestActivity">
+        <activity android:name="com.myallsimpledemo.singleton.activity.Singleton1Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.myallsimpledemo.singleton.activity.Singleton2Activity" />
+        <activity android:name="com.myallsimpledemo.singleton.activity.Singleton3Activity" />
     </application>
 
 </manifest>
