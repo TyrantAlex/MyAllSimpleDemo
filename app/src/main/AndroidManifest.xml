@@ -27,11 +27,10 @@
         <activity android:name="com.dfire.demo.animation.ShowExpandAnimationActivity" />
         <activity android:name="com.realm.ui.RealmFirstActivity" />
         <activity android:name="com.realm.ui.JsonParseActivity" />
-        <activity android:name="com.dataBingding.ui.DataBingdingTestActivity">
+        <activity android:name="com.dataBingding.ui.DataBingdingTestActivity"/>
 
-        <activity android:name="com.dfire.demo.expand.activity.ExpandActivity"></activity>
-        <activity android:name="com.dfire.demo.animation.ShowExpandAnimationActivity">
-        </activity>
+        <activity android:name="com.dfire.demo.expand.activity.ExpandActivity"/>
+        <activity android:name="com.dfire.demo.animation.ShowExpandAnimationActivity"/>
         <activity android:name="com.myallsimpledemo.singleton.activity.Singleton1Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
