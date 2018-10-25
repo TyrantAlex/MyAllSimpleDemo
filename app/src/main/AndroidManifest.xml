@@ -3,7 +3,7 @@
     package="com.example.alex.dagger">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name="com.base.MyApplication"
@@ -18,8 +18,6 @@
         <activity android:name="com.alex.eventbus.Main4Activity" />
         <activity android:name="com.myallsimpledemo.glide.ShowPictureActivity" />
         <activity android:name="com.myallximpledemo.rx.RxjavaActivity" />
-        <activity android:name="com.demo.kotlin.KotlinMainActivity" />
-        <activity android:name="com.demo.kotlin.KotlinSencondActivity" />
         <activity android:name="com.myallximpledemo.rx.rxjavademo.RxMapActivity" />
         <activity android:name="com.demo.viewpager_indicator.activity.MainActivity" />
         <activity android:name="com.demo.imageview.ImageViewScaleTypeActivity" />
@@ -27,19 +25,20 @@
         <activity android:name="com.dfire.demo.animation.ShowExpandAnimationActivity" />
         <activity android:name="com.realm.ui.RealmFirstActivity" />
         <activity android:name="com.realm.ui.JsonParseActivity" />
-        <activity android:name="com.dataBingding.ui.DataBingdingTestActivity"/>
+        <activity android:name="com.dataBingding.ui.DataBingdingTestActivity" />
+        <activity android:name="com.myallsimpledemo.singleton.activity.Singleton1Activity"/>
+        <activity android:name="com.myallsimpledemo.singleton.activity.Singleton2Activity" />
+        <activity android:name="com.myallsimpledemo.singleton.activity.Singleton3Activity" />
+        <activity android:name="com.myallsimpledemo.notification.NotificationTestActivity">
 
-        <activity android:name="com.dfire.demo.expand.activity.ExpandActivity"/>
-        <activity android:name="com.dfire.demo.animation.ShowExpandAnimationActivity"/>
-        <activity android:name="com.myallsimpledemo.singleton.activity.Singleton1Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name="com.myallsimpledemo.singleton.activity.Singleton2Activity" />
-        <activity android:name="com.myallsimpledemo.singleton.activity.Singleton3Activity" />
+        <activity android:name="com.myallsimpledemo.notification.NotificationResultActivity" />
     </application>
 
 </manifest>
